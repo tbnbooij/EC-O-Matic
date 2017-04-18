@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky|Roboto" rel="stylesheet">
+        <title>EC-O-Matic</title>
+        <style>
+            body {
+                margin: 0;
+                height: 100vh;
+                width: 100%;
+                background-color: black;
+                color: white;
+                text-align: center;
+                font-family: 'Fontdiner Swanky', cursive;
+            }
+
+            #title {
+                font-size: 3em;
+                text-shadow: 2px 2px black;
+            }
+
+            video.bgvid {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                z-index: -100;
+                -ms-transform: translateX(-50%) translateY(-50%);
+                -moz-transform: translateX(-50%) translateY(-50%);
+                -webkit-transform: translateX(-50%) translateY(-50%);
+                transform: translateX(-50%) translateY(-50%);
+                background: url(poster.png) no-repeat;
+                background-size: cover;
+            }
+
+            #spacer {
+                margin: 0;
+                width: 100%;
+                height: 20vh;
+            }
+
+            .form-control {
+                font-size: 2em;
+                width: 100px;
+                margin: 0 auto;
+            }
+
+            select.form-control:not([size]):not([multiple]) {
+                height: calc(2em);
+            }
+
+            .btn-primary {
+                font-size: 1.5em;
+            }
+
+            #vid {
+                height: 90vh;
+                width: 90%;
+                display: none;
+                margin: 0 auto;
+
+            }
+
+            #vid_container {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+            }
+
+            #footer {
+                margin: 0;
+                padding: 0;
+            }
+
+            label {
+                text-shadow: 1px 1px black;
+                font-family: 'Roboto', sans-serif;
+                font-size: 2em;
+                font-weight: bold;
+            }
+
+            #grade {
+              display: none;
+              font-size: 15em;
+              font-family: 'Roboto', sans-serif;
+            }
+
+            #grade_msg {
+              display: none;
+              font-size: 3em;
+              font-family: 'Roboto', sans-serif;
+              padding-top: 5%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="spacer"></div>
+        <p id="title">EC-O-Matic<sup style="font-size: 0.5em">TM</sup></p>
+        <br>
+        <div id="input_fields">
+          <div class="form-group">
+            <label for="usr">Networks</label>
+            <input type="number" class="form-control" min="0" max="10" value="10" id="Netw">
+          </div>
+          <div class="form-group">
+            <label for="pwd">Electronics Questions</label>
+            <input type="number" class="form-control" min="0" max="28" value="28" id="Elec1">
+          </div>
+          <div class="form-group">
+            <label for="pwd">Electronic Circuits</label>
+            <input type="number" class="form-control" min="0" max="7" value="7" id="Elec2">
+          </div>
+          <br />
+          <p style="font-family: 'Roboto', sans-serif;">
+            Please note: The EC-O-Matic<sup style="font-size: 0.5em">TM</sup> only gives you a <u>prognosis</u> of your grade.
+          </p>
+        </div>
+
+        <br>
+        <button type="button" id="run" class="btn btn-primary">Calculate my grade</button>
+        <div id="grade_msg">
+
+        </div>
+        <div id="grade">
+        </div>
+
+        <p style="font-size: 1em" id="footer">Coded with ❤</p>
+        <video playsinline="" autoplay="" muted="" loop="" poster="poster.png" id="bgvid" class="bgvid">
+            <source id="webm_src" src="signals_tv.webm" type="video/webm">
+            <source id="mp4_src" src="signals_tv.mp4" type="video/mp4">
+        </video>
+
+        <video playsinline="" loop id="sucvid" class="bgvid" style="display: none">
+            <source id="webm_src" src="sucvid.webm" type="video/webm">
+            <source id="mp4_src" src="sucvid.mp4" type="video/mp4">
+        </video>
+    </body>
+    <script>
+        let net = document.getElementById("Netw");
+        let e1 = document.getElementById("Elec1");
+        let e2 = document.getElementById("Elec2");
+
+        let netVal;
+        let e1Val;
+        let e2Val;
+
+
+        run.addEventListener("click", function() {
+
+
+            netVal = parseInt(net.value);
+            e1Val = parseInt(e1.value);
+            e2Val = parseInt(e2.value);
+
+            if(!(( (netVal >= 0) && (netVal <= 10) ) && ( (e1Val >= 0) && (e1Val <= 28) ) && ( (e2Val >= 0) && (e2Val <= 7) ))) {
+              alert("Input values not within reasonable bounds.");
+              return false;
+            }
+
+            let netGrade = Math.max((netVal - 5)/5, 0);
+            let e1Grade = Math.max((e1Val - (28/4))/(28 - (28/4)), 0);
+            let e2Grade = Math.max((e2Val - (7/5))/(7 - (7/5)), 0);
+            let Grade = Math.round((netGrade*0.25 + e1Grade*0.75*0.5 + e2Grade*0.75*0.5)*100)/10;
+
+            console.table({"Networks [0-1]":netGrade, "Electronics Trivia [0-1]":e1Grade, "Electronic Circuits [0-1]":e2Grade, "Final Grade [0-10]": Grade});
+
+            document.getElementById("grade").innerHTML = Grade;
+            if(Grade < 5) {
+              document.getElementById("grade_msg").innerHTML = "I'm sorry.";
+            }
+            else {
+              document.getElementById("grade_msg").innerHTML = "You made it!";
+              $("#sucvid").fadeIn(1000, function() {});
+              document.getElementById("sucvid").load();
+              document.getElementById("sucvid").play();
+            }
+
+            $( "#bgvid" ).fadeOut(1000, function() {});
+            document.getElementById("title").style.display = "none";
+            document.getElementById("footer").innerHTML = "";
+            document.getElementById("run").style.display = "none";
+            document.getElementById("spacer").style.display = "none";
+            document.getElementById("spacer").style.display = "none";
+            document.getElementById("input_fields").style.display = "none";
+
+            $( "#grade_msg" ).delay(1000).fadeIn(1000, function() {});
+            $( "#grade" ).delay(2000).fadeIn(1000, function() {});
+            setTimeout(function() {
+              $("#footer").html("<br><br><button type='button' id='get_video' class='btn btn-primary' style='font-size: 1em;' onclick='returnHome()'>Want to re-calculate your grade?</button>");
+            }, 3000)
+
+        });
+
+        function returnHome() {
+            document.getElementById("title").style.display = "";
+            document.getElementById("run").style.display = "";
+            document.getElementById("spacer").style.display = "";
+            document.getElementById("footer").innerHTML = "Coded with ❤";
+            document.getElementById("input_fields").style.display = "";
+            document.getElementById("grade").style.display = "";
+            document.getElementById("grade_msg").style.display = "";
+            $("#sucvid").fadeOut(400, function() {});
+            document.getElementById("sucvid").pause();
+            $( "#bgvid" ).fadeIn(400, function() {});
+        }
+    </script>
+</html>
